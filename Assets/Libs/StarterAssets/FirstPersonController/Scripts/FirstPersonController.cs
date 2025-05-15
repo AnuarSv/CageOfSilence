@@ -9,13 +9,14 @@ namespace StarterAssets
 #if ENABLE_INPUT_SYSTEM
 	[RequireComponent(typeof(PlayerInput))]
 #endif
+
 	public class FirstPersonController : MonoBehaviour
 	{
 		[Header("Player")]
 		[Tooltip("Move speed of the character in m/s")]
-		public float MoveSpeed = 4.0f;
+		public float MoveSpeedRaw = 4.0f;
 		[Tooltip("Sprint speed of the character in m/s")]
-		public float SprintSpeed = 6.0f;
+		public float SprintSpeedRaw = 6.0f;
 		[Tooltip("Rotation speed of the character")]
 		public float RotationSpeed = 1.0f;
 		[Tooltip("Acceleration and deceleration")]
@@ -25,7 +26,7 @@ namespace StarterAssets
 		[Tooltip("The height the player can jump")]
 		public float JumpHeight = 1.2f;
 		[Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
-		public float Gravity = -15.0f;
+		public float Gravity = -20.0f;
 
 		[Space(10)]
 		[Tooltip("Time required to pass before being able to jump again. Set to 0f to instantly jump again")]
@@ -51,10 +52,18 @@ namespace StarterAssets
 		[Tooltip("How far in degrees can you move the camera down")]
 		public float BottomClamp = -90.0f;
 
+		[Header("Crouching")]
+		public float crouchYScale;
+		public float startYScale;
+
+		public KeyCode crouchKey = KeyCode.LeftControl;
+
 		// cinemachine
 		private float _cinemachineTargetPitch;
 
 		// player
+		private float MoveSpeed;
+		private float SprintSpeed;
 		private float _speed;
 		private float _rotationVelocity;
 		private float _verticalVelocity;
@@ -108,13 +117,20 @@ namespace StarterAssets
 			// reset our timeouts on start
 			_jumpTimeoutDelta = JumpTimeout;
 			_fallTimeoutDelta = FallTimeout;
-		}
+
+			startYScale = transform.localScale.y;
+
+            MoveSpeed = MoveSpeedRaw;
+            SprintSpeed = SprintSpeedRaw;
+
+        }
 
 		private void Update()
 		{
-			JumpAndGravity();
+            JumpAndGravity();
 			GroundedCheck();
 			Move();
+			Crouch();
 		}
 
 		private void LateUpdate()
@@ -155,12 +171,11 @@ namespace StarterAssets
 		{
 			// set target speed based on move speed, sprint speed and if sprint is pressed
 			float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+            // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
-			// a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
-
-			// note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-			// if there is no input, set the target speed to 0
-			if (_input.move == Vector2.zero) targetSpeed = 0.0f;
+            // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
+            // if there is no input, set the target speed to 0
+            if (_input.move == Vector2.zero) targetSpeed = 0.0f;
 
 			// a reference to the players current horizontal velocity
 			float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
@@ -183,8 +198,8 @@ namespace StarterAssets
 				_speed = targetSpeed;
 			}
 
-			// normalise input direction
-			Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+            // normalise input direction
+            Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
 
 			// note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
 			// if there is a move input rotate player when the player is moving
@@ -194,9 +209,27 @@ namespace StarterAssets
 				inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
 			}
 
-			// move the player
-			_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            // move the player
+            _controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 		}
+
+		private void Crouch()
+		{
+            if (Input.GetKeyDown(crouchKey))
+            {
+                transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
+                MoveSpeed = 1f;
+                SprintSpeed = 1f;
+            }
+
+			if (Input.GetKeyUp(crouchKey))
+			{
+				if (_jumpTimeoutDelta <= 0.0f) _verticalVelocity = (2.75f);
+                transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+                MoveSpeed = MoveSpeedRaw;
+                SprintSpeed = SprintSpeedRaw;
+            }
+        }
 
 		private void JumpAndGravity()
 		{
