@@ -1,52 +1,42 @@
 using UnityEngine;
 using StarterAssets;
-using Unity.VisualScripting;
 
 public class FootstepScript : MonoBehaviour
 {
-    public GameObject footstep;
+    public GameObject footsteps;
     StarterAssetsInputs _input;
-    KeyCode crouchKey = KeyCode.LeftControl;
-    public bool crouch = false;
+    private FirstPersonController controller;
 
     void Start()
     {
         _input = GetComponent<StarterAssetsInputs>();
-        footstep.SetActive(false);
+        controller = GetComponent<FirstPersonController>();
+        footsteps.SetActive(false);
+        controller._isCrouching = false;
     }
 
     void Update()
     {
-        if (_input.move == Vector2.zero | crouch)
+        if (_input.move == Vector2.zero | controller._isCrouching)
         {
             StopFootsteps();
         }
 
-        if (_input.move != Vector2.zero && !crouch)
+        if (_input.move != Vector2.zero && !controller._isCrouching)
         {
             Footsteps();
-        }
-
-        if (Input.GetKeyDown(crouchKey))
-        {
-            crouch = true;
-        }
-
-        if (Input.GetKeyUp(crouchKey))
-        {
-            crouch = false;
         }
 
     }
 
     void Footsteps()
     {
-       footstep.SetActive(true);
+       footsteps.SetActive(true);
     }
 
     void StopFootsteps()
     {
-        footstep.SetActive(false);
+        footsteps.SetActive(false);
     }
 
 }

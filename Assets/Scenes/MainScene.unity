@@ -4968,7 +4968,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b8f0e48367ad054c8bb4d2f02f80720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  footstep: {fileID: 261889381}
+  footsteps: {fileID: 261889381}
   crouch: 0
 --- !u!43 &506668685
 Mesh:

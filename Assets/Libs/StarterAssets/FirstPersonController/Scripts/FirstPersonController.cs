@@ -32,7 +32,8 @@ namespace StarterAssets
         [Header("Crouching")]
         public float crouchSpeed = 1f;
         public float crouchTransitionSpeed = 6f;
-        private bool _isCrouching = false;
+        [HideInInspector]
+        public bool _isCrouching = false;
 
         private float _cinemachineTargetPitch;
         private float MoveSpeed;
