@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PickUpKey : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class PickUpKey : MonoBehaviour
 
     public bool inReach;
 
-
+    [SerializeField] private Image crosshair = null;
     void Start()
     {
         inReach = false;
@@ -26,6 +27,7 @@ public class PickUpKey : MonoBehaviour
         {
             inReach = true;
             pickUpText.SetActive(true);
+            CrosshairChange(true);
 
         }
     }
@@ -36,6 +38,7 @@ public class PickUpKey : MonoBehaviour
         {
             inReach = false;
             pickUpText.SetActive(false);
+            CrosshairChange(false);
 
         }
     }
@@ -52,5 +55,17 @@ public class PickUpKey : MonoBehaviour
         }
 
         
+    }
+
+    void CrosshairChange(bool on)
+    {
+        if (on)
+        {
+            crosshair.color = Color.red;
+        }
+        else
+        {
+            crosshair.color = Color.white;
+        }
     }
 }
