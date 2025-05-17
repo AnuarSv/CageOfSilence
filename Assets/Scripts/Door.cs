@@ -7,19 +7,24 @@ public class Doors : MonoBehaviour
     public Animator door;
     public GameObject openText;
     public AudioSource doorSound;
+    public Collider doorCollider;
 
     public bool inReach;
-    private bool isOpen = false; // Track door state
+    private bool isOpen = false;
+    private bool isMoving = false;
 
     void Start()
     {
         inReach = false;
         isOpen = false;
+
+        if (doorCollider == null)
+            doorCollider = GetComponent<Collider>();
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Reach")
+        if (other.CompareTag("Reach"))
         {
             inReach = true;
             openText.SetActive(true);
@@ -28,7 +33,7 @@ public class Doors : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Reach")
+        if (other.CompareTag("Reach"))
         {
             inReach = false;
             openText.SetActive(false);
@@ -40,31 +45,39 @@ public class Doors : MonoBehaviour
         if (inReach && Input.GetKeyDown(KeyCode.E))
         {
             if (!isOpen)
-            {
-                DoorOpens();
-            }
+                StartCoroutine(OpenDoor());
             else
-            {
-                DoorCloses();
-            }
+                StartCoroutine(CloseDoor());
         }
     }
 
-    void DoorOpens()
+    IEnumerator OpenDoor()
     {
-        Debug.Log("It Opens");
+        isMoving = true;
+        doorCollider.enabled = false;
+
         door.SetBool("Open", true);
         door.SetBool("Close", false);
         doorSound.Play();
         isOpen = true;
+
+        yield return new WaitForSeconds(door.GetCurrentAnimatorStateInfo(0).length);
+        isMoving = false;
+        doorCollider.enabled = true;
     }
 
-    void DoorCloses()
+    IEnumerator CloseDoor()
     {
-        Debug.Log("It Closes");
+        isMoving = true;
+        doorCollider.enabled = false;
+
         door.SetBool("Open", false);
         door.SetBool("Close", true);
         doorSound.Play();
         isOpen = false;
+
+        yield return new WaitForSeconds(door.GetCurrentAnimatorStateInfo(0).length);
+        isMoving = false;
+        doorCollider.enabled = true;
     }
 }

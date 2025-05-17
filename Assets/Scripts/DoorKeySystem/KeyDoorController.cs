@@ -11,8 +11,8 @@ namespace KeySystem
         public AudioSource doorSound;
 
         [Header("Animation Names")]
-        [SerializeField] private string Open = "Open";
-        [SerializeField] private string Close = "Close";
+        [SerializeField] private string Open = "DoorOpen";
+        [SerializeField] private string Close = "DoorClose";
 
         [SerializeField] private int timeToShowUI = 1;
         [SerializeField] private GameObject showDoorLockedUI = null;
@@ -22,9 +22,14 @@ namespace KeySystem
         [SerializeField] private int waitTimer = 1;
         [SerializeField] private bool pauseInteraction = false;
 
+        [Header("Optional Door Collider (will auto-assign if left empty)")]
+        [SerializeField] private Collider doorCollider;
+
         private void Awake()
         {
             DoorAnim = gameObject.GetComponent<Animator>();
+            if (doorCollider == null)
+                doorCollider = GetComponent<Collider>();
         }
 
         private IEnumerator PauseDoorInteraction()
@@ -38,7 +43,7 @@ namespace KeySystem
         {
             if (_keyInventory.hasFirstKey)
             {
-                OpenDoor();
+                StartCoroutine(OpenDoorCoroutine());
             }
             else
             {
@@ -46,23 +51,31 @@ namespace KeySystem
             }
         }
 
-        void OpenDoor()
+        IEnumerator OpenDoorCoroutine()
         {
-            if (!doorOpen && !pauseInteraction)
+            if (pauseInteraction) yield break;
+
+            pauseInteraction = true;
+            doorCollider.enabled = false;
+
+            if (!doorOpen)
             {
                 DoorAnim.Play(Open, 0, 0.0f);
-                doorOpen = true;
                 doorSound.Play();
-                StartCoroutine(PauseDoorInteraction());
+                doorOpen = true;
             }
-
-            else if (doorOpen && !pauseInteraction)
+            else
             {
                 DoorAnim.Play(Close, 0, 0.0f);
-                doorOpen = false;
                 doorSound.Play();
-                StartCoroutine(PauseDoorInteraction());
+                doorOpen = false;
             }
+
+            yield return new WaitForSeconds(DoorAnim.GetCurrentAnimatorStateInfo(0).length);
+            doorCollider.enabled = true;
+
+            yield return new WaitForSeconds(waitTimer);
+            pauseInteraction = false;
         }
 
         IEnumerator ShowDoorLocked()

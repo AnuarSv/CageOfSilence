@@ -27,7 +27,7 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "8c4abdf8-4099-493a-aa1a-129acec7c3df",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -45,6 +45,15 @@
                     "name": "Crouch",
                     "type": "PassThrough",
                     "id": "3436082d-ec2b-4c98-8a25-976cfa310ce1",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "9ffa0c3f-4fd8-42a0-aac3-58a373392a58",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -247,6 +256,28 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0c2b8a09-1d6c-4387-a23d-3ce0b1e7b0f1",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardMouse",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "65f9817a-7601-492d-95f4-f43f09106e88",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

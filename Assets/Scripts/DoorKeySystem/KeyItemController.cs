@@ -11,6 +11,8 @@ namespace KeySystem
 
         [SerializeField] private KeyInventory _keyInventory = null;
 
+        [SerializeField] private AudioSource keyPickupSound = null;
+
         private KeyDoorController doorObject;
 
         private void Start()
@@ -18,6 +20,11 @@ namespace KeySystem
             if (FirstDoor)
             {
                 doorObject = GetComponent<KeyDoorController>();
+            }
+
+            if (FirstKey && keyPickupSound == null)
+            {
+                keyPickupSound = GetComponent<AudioSource>();
             }
         }
 
@@ -27,12 +34,26 @@ namespace KeySystem
             {
                 doorObject.PlayAnimation();
             }
-
             else if (FirstKey)
             {
                 _keyInventory.hasFirstKey = true;
-                gameObject.SetActive(false);
+
+                if (keyPickupSound != null)
+                {
+                    keyPickupSound.Play();
+                    StartCoroutine(DisableKeyAfterSound());
+                }
+                else
+                {
+                    gameObject.SetActive(false);
+                }
             }
+        }
+
+        private IEnumerator DisableKeyAfterSound()
+        {
+            gameObject.SetActive(false);
+            yield return new WaitForSeconds(keyPickupSound.clip.length);
         }
     }
 }
