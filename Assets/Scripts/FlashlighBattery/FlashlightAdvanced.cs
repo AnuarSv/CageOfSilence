@@ -8,7 +8,7 @@ public class FlashlightAdvanced : MonoBehaviour
     [SerializeField] private KeyCode flashlight = KeyCode.F;
     [SerializeField] private KeyCode reload = KeyCode.R;
 
-    public Light light;
+    public new Light light;
     public TMP_Text Lifetime;
 
     public TMP_Text batteryText;

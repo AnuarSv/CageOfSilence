@@ -11,7 +11,7 @@ public class Doors : MonoBehaviour
 
     public bool inReach;
     private bool isOpen = false;
-    private bool isMoving = false;
+    public bool isMoving = false;
 
     void Start()
     {
