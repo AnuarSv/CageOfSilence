@@ -4,6 +4,7 @@ using KeySystem;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using StarterAssets;
 
 public class OpenBoxScript : MonoBehaviour
 {
@@ -13,7 +14,12 @@ public class OpenBoxScript : MonoBehaviour
     public GameObject keyMissingText;
     public GameObject ObjectInside;
     public AudioSource openSound;
+
     [SerializeField] private Image crosshair = null;
+
+    [SerializeField] private KeyCode Interact = KeyCode.E;
+    public GameObject Player;
+    bool use = false;
 
     public bool inReach;
     public bool isOpen;
@@ -24,8 +30,21 @@ public class OpenBoxScript : MonoBehaviour
         openText.SetActive(false);
         keyMissingText.SetActive(false);
         ObjectInside.SetActive(false);
+
+        Player.GetComponent<StarterAssetsInputs>().use = false;
     }
 
+    private void Use()
+    {
+        if (Player.GetComponent<StarterAssetsInputs>().use | Input.GetKey(Interact))
+        {
+            use = true;
+        }
+        else
+        {
+            use = false;
+        }
+    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -52,7 +71,9 @@ public class OpenBoxScript : MonoBehaviour
 
     void Update()
     {
-        if (keyOBNeeded.activeInHierarchy == true && inReach && Input.GetKeyDown(KeyCode.E))
+        Use();
+
+        if (keyOBNeeded.activeInHierarchy == true && inReach && use)
         {
             keyOBNeeded.SetActive(false);
             openSound.Play();
@@ -62,7 +83,7 @@ public class OpenBoxScript : MonoBehaviour
             isOpen = true;
         }
 
-        else if (keyOBNeeded.activeInHierarchy == false && inReach && Input.GetKeyDown(KeyCode.E))
+        else if (keyOBNeeded.activeInHierarchy == false && inReach && use)
         {
             openText.SetActive(false);
             keyMissingText.SetActive(true);

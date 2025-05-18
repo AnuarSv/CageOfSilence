@@ -5,12 +5,12 @@ public class FootstepScript : MonoBehaviour
 {
     public GameObject footsteps;
     StarterAssetsInputs _input;
-    private FirstPersonController controller;
+    private EditedPersonController controller;
 
     void Start()
     {
         _input = GetComponent<StarterAssetsInputs>();
-        controller = GetComponent<FirstPersonController>();
+        controller = GetComponent<EditedPersonController>();
         footsteps.SetActive(false);
         controller._isCrouching = false;
     }

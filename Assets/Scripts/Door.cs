@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using StarterAssets;
 
 public class Doors : MonoBehaviour
 {
     public Animator door;
     public GameObject openText;
+    public GameObject Player;
     public AudioSource doorSound;
     public Collider doorCollider;
 
@@ -13,13 +15,29 @@ public class Doors : MonoBehaviour
     private bool isOpen = false;
     private bool isMoving = false;
 
+    [SerializeField] private KeyCode Interact = KeyCode.E;
+    bool use = false;
+
     void Start()
     {
+        Player.GetComponent<StarterAssetsInputs>().use = false;
+
         inReach = false;
         isOpen = false;
 
         if (doorCollider == null)
             doorCollider = GetComponent<Collider>();
+    }
+    private void Use()
+    {
+        if (Player.GetComponent<StarterAssetsInputs>().use | Input.GetKey(Interact))
+        {
+            use = true;
+        }
+        else
+        {
+            use = false;
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -42,7 +60,9 @@ public class Doors : MonoBehaviour
 
     void Update()
     {
-        if (inReach && Input.GetKeyDown(KeyCode.E))
+        Use();
+
+        if (inReach && use)
         {
             if (!isOpen)
                 StartCoroutine(OpenDoor());

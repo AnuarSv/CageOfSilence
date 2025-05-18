@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using StarterAssets;
 
 namespace KeySystem
 {
@@ -12,7 +13,9 @@ namespace KeySystem
         [SerializeField] private string excludeLayerName = null;
 
         private KeyItemController raycastedObject;
-        [SerializeField] private KeyCode openDoorKey = KeyCode.E;
+        [SerializeField] private KeyCode Interact = KeyCode.E;
+        public GameObject Player;
+        bool use = false;
 
         [SerializeField] private Image crosshair = null;
         private bool isCrosshairActive;
@@ -20,8 +23,25 @@ namespace KeySystem
 
         private string interactableTag = "Interactable";
 
+        private void Start()
+        {
+            Player.GetComponent<StarterAssetsInputs>().use = false;
+        }
+        private void Use()
+        {
+            if (Player.GetComponent<StarterAssetsInputs>().use | Input.GetKey(Interact))
+            {
+                use = true;
+            }
+            else
+            {
+                use = false;
+            }
+        }
+
         private void Update()
         {
+            Use();
             RaycastHit hit;
             Vector3 fwd = transform.TransformDirection(Vector3.forward);
 
@@ -40,7 +60,7 @@ namespace KeySystem
                     isCrosshairActive = true;
                     doOnce = true;
 
-                    if (Input.GetKeyDown(openDoorKey))
+                    if (use)
                     {
                         raycastedObject.ObjectInteraction();
                     }

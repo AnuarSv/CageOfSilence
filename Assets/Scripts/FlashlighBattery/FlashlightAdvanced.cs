@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using StarterAssets;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class FlashlightAdvanced : MonoBehaviour
 {
     [SerializeField] private KeyCode flashlight = KeyCode.F;
-    [SerializeField] private KeyCode reload = KeyCode.R;
+    [SerializeField] private KeyCode reloadFlash = KeyCode.R;
 
     public Light light;
     public TMP_Text Lifetime;
+
+    public GameObject Player;
+    bool reload = false;
+    bool flash = false;
 
     public TMP_Text batteryText;
 
@@ -20,16 +26,39 @@ public class FlashlightAdvanced : MonoBehaviour
     public AudioSource flashON;
     public AudioSource flashOFF;
 
-    private bool on;
-    private bool off;
-
     void Start()
     {
         light = GetComponent<Light>();
 
-        off = true;
+        flash = false;
         light.enabled = false;
+        Player.GetComponent<StarterAssetsInputs>().flash = false;
+        Player.GetComponent<StarterAssetsInputs>().reloadFlash = false;
+    }
 
+    private IEnumerator Flash()
+    {
+        light.enabled = true;
+        flashON.Play();
+        yield return new WaitForSeconds(0.2f);
+        flash = true;
+    }
+    
+    private IEnumerator notFlash()
+    { 
+        light.enabled = false;
+        flashOFF.Play();
+        yield return new WaitForSeconds(0.2f);
+        flash = false;
+    }
+
+    private IEnumerator Reload()
+    {
+        reload = true;
+        batteries -= 1;
+        lifetime += batteries_add;
+        yield return new WaitForSeconds(0.5f);
+        reload = false;
     }
 
     void Update()
@@ -37,23 +66,22 @@ public class FlashlightAdvanced : MonoBehaviour
         Lifetime.text = "CHARGE: " + lifetime.ToString("0") + "%";
         batteryText.text = "BATTERIES: " + batteries.ToString();
 
-        if(Input.GetKeyDown(flashlight) && off)
+        if (Player.GetComponent<StarterAssetsInputs>().flash | Input.GetKey(flashlight) && !flash)
         {
-            flashON.Play();
-            light.enabled = true;
-            on = true;
-            off = false;
+            StartCoroutine(Flash());
+        }
+        else if (Player.GetComponent<StarterAssetsInputs>().flash | Input.GetKey(flashlight) && flash)
+        {
+            StartCoroutine(notFlash());
         }
 
-        else if (Input.GetKeyDown(flashlight) && on)
+        if (Player.GetComponent<StarterAssetsInputs>().reloadFlash | Input.GetKey(reloadFlash) && !reload)
         {
-            flashOFF.Play();
-            light.enabled = false;
-            on = false;
-            off = true;
+            StartCoroutine (Reload());
         }
 
-        if (on)
+
+            if (flash)
         {
             lifetime -= 1 * Time.deltaTime;
         }
@@ -61,25 +89,13 @@ public class FlashlightAdvanced : MonoBehaviour
         if(lifetime <= 0)
         {
             light.enabled = false;
-            on = false;
-            off = true;
+            flash = false;
             lifetime = 0;
         }
 
         if (lifetime >= 100)
         {
             lifetime = 100;
-        }
-
-        if (Input.GetKeyDown(reload) && batteries >= 1)
-        {
-            batteries -= 1;
-            lifetime += batteries_add;
-        }
-
-        if (Input.GetKeyDown(reload) && batteries == 0)
-        {
-            return;
         }
 
         if(batteries <= 0)

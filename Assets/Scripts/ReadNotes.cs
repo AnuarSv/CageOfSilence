@@ -8,6 +8,9 @@ using UnityEngine.UI;
 public class ReadNotes : MonoBehaviour
 {
     [SerializeField] private KeyCode Interact = KeyCode.E;
+    public GameObject Player;
+    bool use = false;
+
     [SerializeField] private Image crosshair = null;
 
     public GameObject noteUI;
@@ -28,6 +31,19 @@ public class ReadNotes : MonoBehaviour
         pickUpText.SetActive(false);
 
         inReach = false;
+
+        Player.GetComponent<StarterAssetsInputs>().use = false;
+    }
+    private void Use()
+    {
+        if (Player.GetComponent<StarterAssetsInputs>().use | Input.GetKey(Interact))
+        {
+            use = true;
+        }
+        else
+        {
+            use = false;
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -52,14 +68,16 @@ public class ReadNotes : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(Interact) && inReach && !doOnce)
+        Use();
+
+        if(use && inReach && !doOnce)
         {
             noteUI.SetActive(true);
             pickUpSound.Play();
             hud.SetActive(false);
             doOnce = true;
         }
-        else if(Input.GetKeyDown(Interact) && doOnce)
+        else if(use && doOnce)
         {
             noteUI.SetActive(false);
             hud.SetActive(true);

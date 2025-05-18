@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using StarterAssets;
 
 public class BatteryPickUp : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class BatteryPickUp : MonoBehaviour
 
     public GameObject pickUpText;
     private GameObject flashlight;
+    public GameObject Player;
+    bool use = false;
 
     public AudioSource pickUpSound;
 
@@ -20,6 +23,18 @@ public class BatteryPickUp : MonoBehaviour
         inReach = false;
         pickUpText.SetActive(false);
         flashlight = GameObject.Find("FlashLight");
+        Player.GetComponent<StarterAssetsInputs>().use = false;
+    }
+    private void Use()
+    {
+        if (Player.GetComponent<StarterAssetsInputs>().use | Input.GetKey(Interact))
+        {
+            use = true;
+        }
+        else
+        {
+            use = false;
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -45,7 +60,9 @@ public class BatteryPickUp : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(Interact) && inReach)
+        Use();
+
+        if(use && inReach)
         {
             flashlight.GetComponent<FlashlightAdvanced>().batteries += 1;
             pickUpSound.Play();
