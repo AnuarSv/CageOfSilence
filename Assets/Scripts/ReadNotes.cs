@@ -66,22 +66,34 @@ public class ReadNotes : MonoBehaviour
         }
     }
 
+    private IEnumerator Open()
+    {
+        noteUI.SetActive(true);
+        pickUpSound.Play();
+        hud.SetActive(false);
+        yield return new WaitForSeconds(0.3f);
+        doOnce = true;
+    }
+
+    private IEnumerator Close()
+    {
+        noteUI.SetActive(false);
+        hud.SetActive(true);
+        yield return new WaitForSeconds(0.3f);
+        doOnce = false;
+    }
+
     void Update()
     {
         Use();
 
         if(use && inReach && !doOnce)
         {
-            noteUI.SetActive(true);
-            pickUpSound.Play();
-            hud.SetActive(false);
-            doOnce = true;
+            StartCoroutine(Open());
         }
         else if(use && doOnce)
         {
-            noteUI.SetActive(false);
-            hud.SetActive(true);
-            doOnce= false;
+            StartCoroutine(Close());
         } 
     }
 

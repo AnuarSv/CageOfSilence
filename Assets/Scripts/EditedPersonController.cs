@@ -1,6 +1,8 @@
+using System.Collections;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
 #endif
 
 namespace StarterAssets
@@ -47,6 +49,8 @@ namespace StarterAssets
         private float _crouchHeight;
         private Vector3 _crouchCenter;
         private Vector3 _crouchCamPos;
+        private bool crouchState = false;
+
         [HideInInspector] public float targetSpeed;
 
         [SerializeField] private Transform cameraTransform;
@@ -283,16 +287,13 @@ namespace StarterAssets
 
         private void Crouch()
         {
-            if (_input.crouch)
+            if (_input.crouch && !crouchState)
             {
-                _isCrouching = true;
+                StartCoroutine(DoCrouch());
             }
-            else
+            else if (CanStandUp() && _input.crouch && crouchState)
             {
-                if (CanStandUp())
-                {
-                    _isCrouching = false;
-                }
+                StartCoroutine(DoNotCrouch());
             }
 
             float targetHeight = _isCrouching ? _crouchHeight : startHeight;
@@ -312,7 +313,18 @@ namespace StarterAssets
             SprintSpeed = Mathf.Lerp(SprintSpeed, _isCrouching ? crouchSpeed : SprintSpeedRaw, Time.deltaTime * 10f);
         }
 
-
+        private IEnumerator DoCrouch()
+        {
+            _isCrouching = true;
+            yield return new WaitForSeconds(0.3f);
+            crouchState = true;
+        }
+        private IEnumerator DoNotCrouch()
+        {
+            _isCrouching = false;
+            yield return new WaitForSeconds(0.3f);
+            crouchState = false;
+        }
 
         private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
         {

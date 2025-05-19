@@ -35,6 +35,10 @@ namespace StarterAssets
         {
             starterAssetsInputs.ReloadFlashInput(virtualReloadFlashState);
         }
+        public void VirtualCrouchInput(bool virtualCrouchState)
+        {
+            starterAssetsInputs.CrouchInput(virtualCrouchState);
+        }
 
     }
 

@@ -20,6 +20,7 @@ public class OpenBoxScript : MonoBehaviour
     [SerializeField] private KeyCode Interact = KeyCode.E;
     public GameObject Player;
     bool use = false;
+    bool ObjectInsideActive = false;
 
     public bool inReach;
     public bool isOpen;
@@ -68,7 +69,14 @@ public class OpenBoxScript : MonoBehaviour
         }
     }
 
-
+    IEnumerator MakeActive()
+    {
+        if (ObjectInsideActive)
+        {
+            yield return new WaitForSeconds(0.3f);
+            ObjectInside.SetActive(true);
+        }
+    }
     void Update()
     {
         Use();
@@ -93,7 +101,8 @@ public class OpenBoxScript : MonoBehaviour
         {
             boxOB.GetComponent<BoxCollider>().enabled = false;
             boxOB.GetComponent<OpenBoxScript>().enabled = false;
-            ObjectInside.SetActive(true);
+            ObjectInsideActive = true;
+            StartCoroutine(MakeActive());
         }
     }
     void CrosshairChange(bool on)

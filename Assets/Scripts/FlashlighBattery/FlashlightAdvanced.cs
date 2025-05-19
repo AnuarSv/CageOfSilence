@@ -16,6 +16,7 @@ public class FlashlightAdvanced : MonoBehaviour
     public GameObject Player;
     bool reload = false;
     bool flash = false;
+    bool flashState = false;
 
     public TMP_Text batteryText;
 
@@ -38,17 +39,25 @@ public class FlashlightAdvanced : MonoBehaviour
 
     private IEnumerator Flash()
     {
+        if (!flashState)
+        {
+            flashON.Play();
+            flashState = true;
+        }
         light.enabled = true;
-        flashON.Play();
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.3f);
         flash = true;
     }
     
     private IEnumerator notFlash()
-    { 
+    {
+        if (flashState)
+        {
+            flashOFF.Play();
+            flashState = false;
+        }
         light.enabled = false;
-        flashOFF.Play();
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.3f);
         flash = false;
     }
 
@@ -79,7 +88,6 @@ public class FlashlightAdvanced : MonoBehaviour
         {
             StartCoroutine (Reload());
         }
-
 
             if (flash)
         {

@@ -13,7 +13,7 @@ public class Doors : MonoBehaviour
 
     public bool inReach;
     private bool isOpen = false;
-    public bool isMoving = false;
+    private bool isMoving = false;
 
     [SerializeField] private KeyCode Interact = KeyCode.E;
     bool use = false;
@@ -62,7 +62,7 @@ public class Doors : MonoBehaviour
     {
         Use();
 
-        if (inReach && use)
+        if (inReach && use && !isMoving)
         {
             if (!isOpen)
                 StartCoroutine(OpenDoor());
