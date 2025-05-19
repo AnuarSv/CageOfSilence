@@ -13,7 +13,7 @@ public class Doors : MonoBehaviour
 
     public bool inReach;
     private bool isOpen = false;
-    private bool isMoving = false;
+    public bool isMoving = false;
 
     [SerializeField] private KeyCode Interact = KeyCode.E;
     bool use = false;
