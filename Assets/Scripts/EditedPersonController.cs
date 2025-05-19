@@ -186,7 +186,7 @@ namespace StarterAssets
                 }
             }
 
-            if (!IsCurrentDeviceMouse && rightFingerId != -1) 
+            if (rightFingerId != -1) 
             {
                 //cinemachine vertical rotation mobile
                 _cinemachineTargetPitch += lookInput.y * RotationSpeed *-1;
