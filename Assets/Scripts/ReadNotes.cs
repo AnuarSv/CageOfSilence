@@ -4,7 +4,6 @@ using StarterAssets;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class ReadNotes : MonoBehaviour
 {
     [SerializeField] private KeyCode Interact = KeyCode.E;
