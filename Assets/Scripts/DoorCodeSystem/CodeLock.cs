@@ -11,6 +11,9 @@ public class CodeLock: MonoBehaviour
 {
     [SerializeField] private KeyCode Interact = KeyCode.E;
     public GameObject Player;
+    public AudioSource Press;
+    public AudioSource Correct;
+    public AudioSource Incorrect;
     bool use = false;
 
     [SerializeField] private Image crosshair = null;
@@ -139,60 +142,70 @@ public class CodeLock: MonoBehaviour
                     Debug.Log("1");
                     InputCode += 1;
                     Debug.Log(InputCode);
+                    StartCoroutine(PressSound());
                 }
                 else if (Button2.GetComponent<Button>().PressedButton2)
                 {
                     Debug.Log("2");
                     InputCode += 2;
                     Debug.Log(InputCode);
+                    StartCoroutine(PressSound());
                 }
                 else if (Button3.GetComponent<Button>().PressedButton3)
                 {
                     Debug.Log("3");
                     InputCode += 3;
                     Debug.Log(InputCode);
+                    StartCoroutine(PressSound());
                 }
                 else if (Button4.GetComponent<Button>().PressedButton4)
                 {
                     Debug.Log("4");
                     InputCode += 4;
                     Debug.Log(InputCode);
+                    StartCoroutine(PressSound());
                 }
                 else if (Button5.GetComponent<Button>().PressedButton5)
                 {
                     Debug.Log("5");
                     InputCode += 5;
                     Debug.Log(InputCode);
+                    StartCoroutine(PressSound());
                 }
                 else if (Button6.GetComponent<Button>().PressedButton6)
                 {
                     Debug.Log("6");
                     InputCode += 6;
                     Debug.Log(InputCode);
+                    StartCoroutine(PressSound());
                 }
                 else if (Button7.GetComponent<Button>().PressedButton7)
                 {
                     Debug.Log("7");
                     InputCode += 7;
                     Debug.Log(InputCode);
+                    StartCoroutine(PressSound());
                 }
                 else if (Button8.GetComponent<Button>().PressedButton8)
                 {
                     Debug.Log("8");
                     InputCode += 8;
                     Debug.Log(InputCode);
+                    StartCoroutine(PressSound());
                 }
                 else if (Button9.GetComponent<Button>().PressedButton9)
                 {
                     Debug.Log("9");
                     InputCode += 9;
                     Debug.Log(InputCode);
+                    StartCoroutine(PressSound());
                 }
                 else if (Button0.GetComponent<Button>().PressedButton0)
                 {
                     Debug.Log("0");
                     InputCode += 0;
                     Debug.Log(InputCode);
+                    StartCoroutine(PressSound());
                 }
             }
 
@@ -202,21 +215,25 @@ public class CodeLock: MonoBehaviour
                 InputCode = "";
                 Debug.Log(InputCode);
                 CodeTextField.text = "0000";
+                StartCoroutine(PressSound());
             }
             else if (ButtonEnter.GetComponent<Button>().PressedButtonEnter)
             {
                 Debug.Log("Enter");
                 if (InputCode == CorrectCode)
                 {
+                    Correct.Play();
                     isCorrect = true;
                     Debug.Log("Correct!");
                     StartCoroutine(Close());
                 }
                 else
                 {
+                    Incorrect.Play();
                     InputCode = "";
                     CodeTextField.text = "0000";
                     Debug.Log("Incorrect!");
+                    StartCoroutine(PressSound());
                 }
             }
         }
@@ -231,6 +248,15 @@ public class CodeLock: MonoBehaviour
         {
             pressOnce = false;
         }
+    }
+
+    private IEnumerator PressSound()
+    {
+        Press.Play();
+        Debug.Log("Start");
+        yield return new WaitForSeconds(Press.clip.length);
+        Press.Stop();
+        Debug.Log("Stop");
     }
 
     void CrosshairChange(bool on)
