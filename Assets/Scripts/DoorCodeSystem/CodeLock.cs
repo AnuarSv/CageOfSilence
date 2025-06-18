@@ -24,18 +24,54 @@ public class CodeLock: MonoBehaviour
     private bool doOnce = false;
     private bool pressOnce = false;
 
-    public GameObject Button1;
-    public GameObject Button2;
-    public GameObject Button3;
-    public GameObject Button4;
-    public GameObject Button5;
-    public GameObject Button6;
-    public GameObject Button7;
-    public GameObject Button8;
-    public GameObject Button9;
-    public GameObject Button0;
-    public GameObject ButtonReset;
-    public GameObject ButtonEnter;
+    public GameObject B1;
+    private Button b1Script;
+    private bool b1;
+
+    public GameObject B2;
+    private Button b2Script;
+    private bool b2;
+    
+    public GameObject B3;
+    private Button b3Script;
+    private bool b3;
+
+    public GameObject B4;
+    private Button b4Script;
+    private bool b4;
+
+    public GameObject B5;
+    private Button b5Script;
+    private bool b5;
+
+    public GameObject B6;
+    private Button b6Script;
+    private bool b6;
+
+    public GameObject B7;
+    private Button b7Script;
+    private bool b7;
+
+    public GameObject B8;
+    private Button b8Script;
+    private bool b8;
+
+    public GameObject B9;
+    private Button b9Script;
+    private bool b9;
+
+    public GameObject B0;
+    private Button b0Script;
+    private bool b0;
+
+    public GameObject BRes;
+    private Button bResScript;
+    private bool bRes;
+
+    public GameObject BEnt;
+    private Button bEntScript;
+    private bool bEnt;
+
 
     [HideInInspector] public string InputCode;
     [HideInInspector] public bool isCorrect = false;
@@ -54,18 +90,18 @@ public class CodeLock: MonoBehaviour
 
         Player.GetComponent<StarterAssetsInputs>().use = false;
 
-        Button1.GetComponent<Button>().PressedButton1 = false;
-        Button2.GetComponent<Button>().PressedButton2 = false;
-        Button3.GetComponent<Button>().PressedButton3 = false;
-        Button4.GetComponent<Button>().PressedButton4 = false;
-        Button5.GetComponent<Button>().PressedButton5 = false;
-        Button6.GetComponent<Button>().PressedButton6 = false;
-        Button7.GetComponent<Button>().PressedButton7 = false;
-        Button8.GetComponent<Button>().PressedButton8 = false;
-        Button9.GetComponent<Button>().PressedButton9 = false;
-        Button0.GetComponent<Button>().PressedButton0 = false;
-        ButtonReset.GetComponent<Button>().PressedButtonReset = false;
-        ButtonEnter.GetComponent<Button>().PressedButtonEnter = false;
+        b1Script = B1.GetComponent<Button>();
+        b2Script = B2.GetComponent<Button>();
+        b3Script = B3.GetComponent<Button>();
+        b4Script = B4.GetComponent<Button>();
+        b5Script = B5.GetComponent<Button>();
+        b6Script = B6.GetComponent<Button>();
+        b7Script = B7.GetComponent<Button>();
+        b8Script = B8.GetComponent<Button>();
+        b9Script = B9.GetComponent<Button>();
+        b0Script = B0.GetComponent<Button>();
+        bResScript = BRes.GetComponent<Button>();
+        bEntScript = BEnt.GetComponent<Button>();
     }
     private void Use()
     {
@@ -122,6 +158,19 @@ public class CodeLock: MonoBehaviour
 
     void Update()
     {
+        b1 = b1Script.Pressed;
+        b2 = b2Script.Pressed;
+        b3 = b3Script.Pressed;
+        b4 = b4Script.Pressed;
+        b5 = b5Script.Pressed;
+        b6 = b6Script.Pressed;
+        b7 = b7Script.Pressed;
+        b8 = b8Script.Pressed;
+        b9 = b9Script.Pressed;
+        b0 = b0Script.Pressed;
+        bRes = bResScript.Pressed;
+        bEnt = bEntScript.Pressed;
+
         Use();
 
         if (use && inReach && !doOnce && !isCorrect)
@@ -137,70 +186,70 @@ public class CodeLock: MonoBehaviour
         {
             if (!(InputCode.Length >= CodeLength))
             {
-                if (Button1.GetComponent<Button>().PressedButton1)
+                if (b1)
                 {
                     Debug.Log("1");
                     InputCode += 1;
                     Debug.Log(InputCode);
                     StartCoroutine(PressSound());
                 }
-                else if (Button2.GetComponent<Button>().PressedButton2)
+                else if (b2)
                 {
                     Debug.Log("2");
                     InputCode += 2;
                     Debug.Log(InputCode);
                     StartCoroutine(PressSound());
                 }
-                else if (Button3.GetComponent<Button>().PressedButton3)
+                else if (b3)
                 {
                     Debug.Log("3");
                     InputCode += 3;
                     Debug.Log(InputCode);
                     StartCoroutine(PressSound());
                 }
-                else if (Button4.GetComponent<Button>().PressedButton4)
+                else if (b4)
                 {
                     Debug.Log("4");
                     InputCode += 4;
                     Debug.Log(InputCode);
                     StartCoroutine(PressSound());
                 }
-                else if (Button5.GetComponent<Button>().PressedButton5)
+                else if (b5)
                 {
                     Debug.Log("5");
                     InputCode += 5;
                     Debug.Log(InputCode);
                     StartCoroutine(PressSound());
                 }
-                else if (Button6.GetComponent<Button>().PressedButton6)
+                else if (b6)
                 {
                     Debug.Log("6");
                     InputCode += 6;
                     Debug.Log(InputCode);
                     StartCoroutine(PressSound());
                 }
-                else if (Button7.GetComponent<Button>().PressedButton7)
+                else if (b7)
                 {
                     Debug.Log("7");
                     InputCode += 7;
                     Debug.Log(InputCode);
                     StartCoroutine(PressSound());
                 }
-                else if (Button8.GetComponent<Button>().PressedButton8)
+                else if (b8)
                 {
                     Debug.Log("8");
                     InputCode += 8;
                     Debug.Log(InputCode);
                     StartCoroutine(PressSound());
                 }
-                else if (Button9.GetComponent<Button>().PressedButton9)
+                else if (b9)
                 {
                     Debug.Log("9");
                     InputCode += 9;
                     Debug.Log(InputCode);
                     StartCoroutine(PressSound());
                 }
-                else if (Button0.GetComponent<Button>().PressedButton0)
+                else if (b0)
                 {
                     Debug.Log("0");
                     InputCode += 0;
@@ -209,7 +258,7 @@ public class CodeLock: MonoBehaviour
                 }
             }
 
-            if (ButtonReset.GetComponent<Button>().PressedButtonReset)
+            if (bRes)
             {
                 Debug.Log("Reset");
                 InputCode = "";
@@ -217,7 +266,7 @@ public class CodeLock: MonoBehaviour
                 CodeTextField.text = "0000";
                 StartCoroutine(PressSound());
             }
-            else if (ButtonEnter.GetComponent<Button>().PressedButtonEnter)
+            else if (bEnt)
             {
                 Debug.Log("Enter");
                 if (InputCode == CorrectCode)
@@ -239,7 +288,7 @@ public class CodeLock: MonoBehaviour
         }
 
 
-        if (Button0.GetComponent<Button>().PressedButton0 | Button1.GetComponent<Button>().PressedButton1 | Button2.GetComponent<Button>().PressedButton2 | Button3.GetComponent<Button>().PressedButton3 | Button4.GetComponent<Button>().PressedButton4 | Button5.GetComponent<Button>().PressedButton5 | Button6.GetComponent<Button>().PressedButton6 | Button7.GetComponent<Button>().PressedButton7 | Button8.GetComponent<Button>().PressedButton8 | Button9.GetComponent<Button>().PressedButton9 | ButtonReset.GetComponent<Button>().PressedButtonReset | ButtonEnter.GetComponent<Button>().PressedButtonEnter)
+        if (b1 | b2 | b3 | b4 | b5 | b6 | b7 | b8 | b9 | b0 | bRes | bEnt)
         {
             pressOnce = true;
             CodeTextField.text = InputCode;
