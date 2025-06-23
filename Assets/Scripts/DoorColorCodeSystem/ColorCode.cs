@@ -1,11 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using StarterAssets;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class ColorCode : MonoBehaviour
@@ -25,22 +20,48 @@ public class ColorCode : MonoBehaviour
     private bool doOnce = false;
 
     public GameObject Red;
+    private ColorButton redButton;
+    private bool red;
     private bool rOnce = false;
+
     public GameObject Green;
+    private ColorButton greenButton;
+    private bool green;
     private bool gOnce = false;
+
     public GameObject Blue;
+    private ColorButton blueButton;
+    private bool blue;
     private bool bOnce = false;
+
     public GameObject Pink;
+    private ColorButton pinkButton;
+    private bool pink;
     private bool pOnce = false;
+
     public GameObject Yellow;
+    private ColorButton yellowButton;
+    private bool yellow;
     private bool yOnce = false;
+
     public GameObject Brown;
+    private ColorButton brownButton;
+    private bool brown;
     private bool brOnce = false;
+
     public GameObject Magenta;
+    private ColorButton magentaButton;
+    private bool magenta;
     private bool mOnce = false;
+
     public GameObject Cyan;
+    private ColorButton cyanButton;
+    private bool cyan;
     private bool cOnce = false;
+
     public GameObject DarkGreen;
+    private ColorButton dgButton;
+    private bool dg;
     private bool dgOnce = false;
 
     public string CorrectCode = "r/g/b/c/m/y/br/p/dg/";
@@ -56,15 +77,15 @@ public class ColorCode : MonoBehaviour
 
         Player.GetComponent<StarterAssetsInputs>().use = false;
 
-        Red.GetComponent<ColorButton>().PressedRed = false;
-        Green.GetComponent<ColorButton>().PressedGreen = false;
-        Blue.GetComponent<ColorButton>().PressedBlue = false;
-        Pink.GetComponent<ColorButton>().PressedPink = false;
-        Yellow.GetComponent<ColorButton>().PressedYellow = false;
-        Brown.GetComponent<ColorButton>().PressedBrown = false;
-        Magenta.GetComponent<ColorButton>().PressedMagenta = false;
-        Cyan.GetComponent<ColorButton>().PressedCyan = false;
-        DarkGreen.GetComponent<ColorButton>().PressedDarkGreen = false;
+        redButton = Red.GetComponent<ColorButton>();
+        greenButton = Green.GetComponent<ColorButton>();
+        blueButton = Blue.GetComponent<ColorButton>();
+        pinkButton = Pink.GetComponent<ColorButton>();
+        yellowButton = Yellow.GetComponent<ColorButton>();
+        brownButton = Brown.GetComponent<ColorButton>();
+        magentaButton = Magenta.GetComponent<ColorButton>();
+        cyanButton = Cyan.GetComponent<ColorButton>();
+        dgButton = DarkGreen.GetComponent<ColorButton>();
     }
 
     private void Use()
@@ -122,6 +143,16 @@ public class ColorCode : MonoBehaviour
 
     void Update()
     {
+        red = redButton.Pressed;
+        green = greenButton.Pressed;
+        blue = blueButton.Pressed;
+        pink = pinkButton.Pressed;
+        yellow = yellowButton.Pressed;
+        brown = brownButton.Pressed;
+        magenta = magentaButton.Pressed;
+        cyan = cyanButton.Pressed;
+        dg = dgButton.Pressed;
+
         Use();
 
         if (use && inReach && !doOnce && !isCorrect)
@@ -133,7 +164,7 @@ public class ColorCode : MonoBehaviour
             StartCoroutine(Close());
         }
 
-        if (Red.GetComponent<ColorButton>().PressedRed && !rOnce)
+        if (red && !rOnce)
         {
             StartCoroutine(PressSound());
             InputCode += "r/";
@@ -141,7 +172,7 @@ public class ColorCode : MonoBehaviour
             rOnce = true;
             Red.GetComponent<Image>().color = Color.grey;
         }
-        if (Green.GetComponent<ColorButton>().PressedGreen && !gOnce)
+        if (green && !gOnce)
         {
             StartCoroutine(PressSound());
             InputCode += "g/";
@@ -149,7 +180,7 @@ public class ColorCode : MonoBehaviour
             gOnce = true;
             Green.GetComponent<Image>().color = Color.grey;
         }
-        if (Blue.GetComponent<ColorButton>().PressedBlue && !bOnce)
+        if (blue && !bOnce)
         {
             StartCoroutine(PressSound());
             InputCode += "b/";
@@ -157,7 +188,7 @@ public class ColorCode : MonoBehaviour
             bOnce = true;
             Blue.GetComponent<Image>().color = Color.grey;
         }
-        if (Pink.GetComponent<ColorButton>().PressedPink && !pOnce)
+        if (pink && !pOnce)
         {
             StartCoroutine(PressSound());
             InputCode += "p/";
@@ -165,7 +196,7 @@ public class ColorCode : MonoBehaviour
             pOnce = true;
             Pink.GetComponent<Image>().color = Color.grey;
         }
-        if (Yellow.GetComponent<ColorButton>().PressedYellow && !yOnce)
+        if (yellow && !yOnce)
         {
             StartCoroutine(PressSound());
             InputCode += "y/";
@@ -173,7 +204,7 @@ public class ColorCode : MonoBehaviour
             yOnce = true;
             Yellow.GetComponent<Image>().color = Color.grey;
         }
-        if (Brown.GetComponent<ColorButton>().PressedBrown && !brOnce)
+        if (brown && !brOnce)
         {
             StartCoroutine(PressSound());
             InputCode += "br/";
@@ -181,7 +212,7 @@ public class ColorCode : MonoBehaviour
             brOnce = true;
             Brown.GetComponent<Image>().color = Color.grey;
         }
-        if (Magenta.GetComponent<ColorButton>().PressedMagenta && !mOnce)
+        if (magenta && !mOnce)
         {
             StartCoroutine(PressSound());
             InputCode += "m/";
@@ -189,7 +220,7 @@ public class ColorCode : MonoBehaviour
             mOnce = true;
             Magenta.GetComponent<Image>().color = Color.grey;
         }
-        if (Cyan.GetComponent<ColorButton>().PressedCyan && !cOnce)
+        if (cyan && !cOnce)
         {
             StartCoroutine(PressSound());
             InputCode += "c/";
@@ -197,7 +228,7 @@ public class ColorCode : MonoBehaviour
             cOnce = true;
             Cyan.GetComponent<Image>().color = Color.grey;
         }
-        if (DarkGreen.GetComponent<ColorButton>().PressedDarkGreen && !dgOnce)
+        if (dg && !dgOnce)
         {
             StartCoroutine(PressSound());
             InputCode += "dg/";
@@ -206,7 +237,7 @@ public class ColorCode : MonoBehaviour
             DarkGreen.GetComponent<Image>().color = Color.grey;
         }
 
-        if (Red.GetComponent<ColorButton>().PressedRed && Green.GetComponent<ColorButton>().PressedGreen && Blue.GetComponent<ColorButton>().PressedBlue && Pink.GetComponent<ColorButton>().PressedPink && Yellow.GetComponent<ColorButton>().PressedYellow && Brown.GetComponent<ColorButton>().PressedBrown && Magenta.GetComponent<ColorButton>().PressedMagenta && Cyan.GetComponent<ColorButton>().PressedCyan && DarkGreen.GetComponent<ColorButton>().PressedDarkGreen)
+        if (red && green && blue && pink && yellow && brown && magenta && cyan && dg)
         {
             if (InputCode == CorrectCode)
             {
@@ -245,15 +276,15 @@ public class ColorCode : MonoBehaviour
 
     void Reset()
     {
-        Red.GetComponent<ColorButton>().PressedRed = false;
-        Green.GetComponent<ColorButton>().PressedGreen = false;
-        Blue.GetComponent<ColorButton>().PressedBlue = false;
-        Pink.GetComponent<ColorButton>().PressedPink = false;
-        Yellow.GetComponent<ColorButton>().PressedYellow = false;
-        Brown.GetComponent<ColorButton>().PressedBrown = false;
-        Magenta.GetComponent<ColorButton>().PressedMagenta = false;
-        Cyan.GetComponent<ColorButton>().PressedCyan = false;
-        DarkGreen.GetComponent<ColorButton>().PressedDarkGreen = false;
+        Red.GetComponent<ColorButton>().Pressed = false;
+        Green.GetComponent<ColorButton>().Pressed = false;
+        Blue.GetComponent<ColorButton>().Pressed = false;
+        Pink.GetComponent<ColorButton>().Pressed = false;
+        Yellow.GetComponent<ColorButton>().Pressed = false;
+        Brown.GetComponent<ColorButton>().Pressed = false;
+        Magenta.GetComponent<ColorButton>().Pressed = false;
+        Cyan.GetComponent<ColorButton>().Pressed = false;
+        DarkGreen.GetComponent<ColorButton>().Pressed = false;
 
         Red.GetComponent<Image>().color = Color.white;
         Green.GetComponent<Image>().color = Color.white;
