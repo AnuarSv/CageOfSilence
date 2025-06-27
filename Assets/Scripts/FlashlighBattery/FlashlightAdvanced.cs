@@ -86,7 +86,10 @@ public class FlashlightAdvanced : MonoBehaviour
 
         if (Player.GetComponent<StarterAssetsInputs>().reloadFlash | Input.GetKey(reloadFlash) && !reload)
         {
-            StartCoroutine (Reload());
+            if (batteries > 0)
+            {
+                StartCoroutine(Reload());
+            }
         }
 
             if (flash)

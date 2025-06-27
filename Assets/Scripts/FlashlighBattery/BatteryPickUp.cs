@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using StarterAssets;
 
@@ -62,13 +60,14 @@ public class BatteryPickUp : MonoBehaviour
     {
         Use();
 
-        if(use && inReach)
+        if (use && inReach)
         {
             flashlight.GetComponent<FlashlightAdvanced>().batteries += 1;
             pickUpSound.Play();
             inReach = false;
             pickUpText.SetActive(false);
             Destroy(gameObject);
+            CrosshairChange(false);
         }
         
     }
