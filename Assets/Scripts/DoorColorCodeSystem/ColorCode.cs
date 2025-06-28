@@ -64,7 +64,7 @@ public class ColorCode : MonoBehaviour
     private bool dg;
     private bool dgOnce = false;
 
-    public string CorrectCode = "r/g/b/c/m/y/br/p/dg/";
+    [SerializeField] private string CorrectCode;
     [HideInInspector] public string InputCode;
     [HideInInspector] public bool isCorrect = false;
     void Start()

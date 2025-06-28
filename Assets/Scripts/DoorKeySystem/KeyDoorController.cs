@@ -18,6 +18,7 @@ namespace KeySystem
         [SerializeField] private GameObject showDoorLockedUI = null;
 
         [SerializeField] private KeyInventory _keyInventory = null;
+        [SerializeField] private KeyItemController _itemController = null;
 
         [SerializeField] private int waitTimer = 1;
         [SerializeField] private bool pauseInteraction = false;
@@ -41,7 +42,11 @@ namespace KeySystem
 
         public void PlayAnimation()
         {
-            if (_keyInventory.hasFirstKey)
+            if (_keyInventory.hasFirstKey && _itemController.FirstDoor)
+            {
+                StartCoroutine(OpenDoorCoroutine());
+            }
+            else if (_keyInventory.hasMainKey && _itemController.MainDoor)
             {
                 StartCoroutine(OpenDoorCoroutine());
             }

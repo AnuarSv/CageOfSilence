@@ -6,14 +6,17 @@ namespace KeySystem
 {
     public class KeyItemController : MonoBehaviour
     {
-        [SerializeField] private bool FirstDoor = false;
+        public bool FirstDoor = false;
+        public bool MainDoor = false;
         [SerializeField] private bool FirstKey = false;
+        [SerializeField] private bool MainKey = false;
 
         [SerializeField] private KeyInventory _keyInventory = null;
 
         [SerializeField] private AudioSource keyPickupSound = null;
 
         private KeyDoorController doorObject;
+        private MainDoorController doorMain;
 
         private void Start()
         {
@@ -21,8 +24,12 @@ namespace KeySystem
             {
                 doorObject = GetComponent<KeyDoorController>();
             }
+            else if (MainDoor)
+            {
+                doorMain = GetComponent<MainDoorController>();
+            }
 
-            if (FirstKey && keyPickupSound == null)
+            if ((FirstKey || MainKey) && keyPickupSound == null)
             {
                 keyPickupSound = GetComponent<AudioSource>();
             }
@@ -34,9 +41,27 @@ namespace KeySystem
             {
                 doorObject.PlayAnimation();
             }
+            else if (MainDoor)
+            {
+                doorMain.PlayAnimation();
+            }
             else if (FirstKey)
             {
                 _keyInventory.hasFirstKey = true;
+
+                if (keyPickupSound != null)
+                {
+                    keyPickupSound.Play();
+                    StartCoroutine(DisableKeyAfterSound());
+                }
+                else
+                {
+                    gameObject.SetActive(false);
+                }
+            }
+            else if (MainKey)
+            {
+                _keyInventory.hasMainKey = true;
 
                 if (keyPickupSound != null)
                 {

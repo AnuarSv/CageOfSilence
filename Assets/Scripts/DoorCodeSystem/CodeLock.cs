@@ -1,10 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using StarterAssets;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class CodeLock: MonoBehaviour
@@ -73,10 +70,10 @@ public class CodeLock: MonoBehaviour
     private bool bEnt;
 
 
-    [HideInInspector] public string InputCode;
+    [HideInInspector] public string InputCode = null;
     [HideInInspector] public bool isCorrect = false;
     public int CodeLength = 4;
-    public string CorrectCode = "2811";
+    [SerializeField] private string CorrectCode;
 
     public TextMeshProUGUI CodeTextField;
 
@@ -117,7 +114,7 @@ public class CodeLock: MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Reach")
+        if (other.gameObject.CompareTag("Reach"))
         {
             inReach = true;
             TextE.SetActive(true);
@@ -127,7 +124,7 @@ public class CodeLock: MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Reach")
+        if (other.gameObject.CompareTag("Reach"))
         {
             inReach = false;
             TextE.SetActive(false);
