@@ -1,10 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using KeySystem;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using StarterAssets;
+using TMPro;
+
 
 public class OpenBoxScript : MonoBehaviour
 {
@@ -25,6 +24,16 @@ public class OpenBoxScript : MonoBehaviour
     public bool inReach;
     public bool isOpen;
 
+    // Comments
+    public GameObject textField;
+    private TextMeshProUGUI _textField;
+    [SerializeField] private bool Repeatable;
+    [SerializeField] private string comment;
+    public float SecBeforeSymbol = 0.05f;
+    private bool callOnce = false;
+    private char[] com;
+    private bool commentOnce = false;
+
     void Start()
     {
         inReach = false;
@@ -33,6 +42,11 @@ public class OpenBoxScript : MonoBehaviour
         ObjectInside.SetActive(false);
 
         Player.GetComponent<StarterAssetsInputs>().use = false;
+
+        // Comments
+        _textField = textField.GetComponent<TextMeshProUGUI>();
+        com = new char[comment.Length];
+        com = comment.ToCharArray();
     }
 
     private void Use()
@@ -77,6 +91,42 @@ public class OpenBoxScript : MonoBehaviour
             ObjectInside.SetActive(true);
         }
     }
+
+    // Comments
+    private IEnumerator Comment()
+    {
+        _textField.text = "";
+        textField.SetActive(true);
+        for (int i = 0; i < com.Length; i += 1)
+        {
+            _textField.text += com[i];
+            yield return new WaitForSeconds(SecBeforeSymbol);
+        }
+        yield return new WaitForSeconds(0.8f);
+        textField.SetActive(false);
+        callOnce = false;
+    }
+
+    // Comments
+    private void CallComment()
+    {
+        if (!callOnce)
+        {
+            if (!Repeatable)
+            {
+                if (!commentOnce)
+                {
+                    StartCoroutine(Comment());
+                    commentOnce = true;
+                }
+            }
+            else
+            {
+                StartCoroutine(Comment());
+            }
+        }
+    }
+
     void Update()
     {
         Use();
@@ -95,6 +145,10 @@ public class OpenBoxScript : MonoBehaviour
         {
             openText.SetActive(false);
             keyMissingText.SetActive(true);
+
+            // Comments
+            CallComment();
+            callOnce = true;
         }
 
         if(isOpen)

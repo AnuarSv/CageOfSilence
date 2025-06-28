@@ -1,9 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using StarterAssets;
-using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class FlashlightAdvanced : MonoBehaviour
 {
