@@ -9,6 +9,7 @@ TagManager:
   - Door
   - Reach
   - Interactable
+  - EnemyBullet
   layers:
   - Default
   - TransparentFX
